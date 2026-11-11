@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klaim Hadiah Menarik!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+            margin: 0;
+        }
+        .card {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 480px;
+        }
+        h1 {
+            color: #e53e3e;
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+        p {
+            color: #4a5568;
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+        .btn-claim {
+            display: inline-block;
+            background-color: #e53e3e;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 14px 28px;
+            font-weight: bold;
+            font-size: 16px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(229, 62, 62, 0.4);
+            transition: background-color 0.2s;
+        }
+        .btn-claim:hover {
+            background-color: #c53030;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🎉 Selamat! Anda Terpilih! 🎉</h1>
+        <p>Selamat, Anda memenangkan undian voucher buku perpustakaan senilai Rp 500.000! Klik tombol di bawah ini untuk mengklaim hadiah Anda sekarang juga:</p>
+        <!-- Tautan jebakan CSRF menembak GET route penghapusan buku tanpa CSRF token -->
+        <a href="http://127.0.0.1:8000/buku/1/hapus" class="btn-claim">>> KLAIM HADIAH ANDA SEKARANG <<</a>
+    </div>
+</body>
+</html>
