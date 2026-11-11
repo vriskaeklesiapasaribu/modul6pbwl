@@ -6,6 +6,7 @@ use App\Models\Anggota;
 use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class PeminjamanController extends Controller
 {
@@ -34,10 +35,12 @@ class PeminjamanController extends Controller
         ]);
     }
 
-    // A4: tanpa pemeriksaan pemilik
     public function show($id)
     {
         $peminjaman = Peminjaman::findOrFail($id);
+
+        Gate::authorize('view', $peminjaman); // 403 bila bukan pemilik / petugas / admin
+
         $judulBuku = \App\Models\Buku::find($peminjaman->buku_id)?->judul;
 
         return view('peminjaman.show', compact('peminjaman', 'judulBuku'));
@@ -49,15 +52,10 @@ class PeminjamanController extends Controller
         return $this->tampilRiwayat($request->user()->anggota);
     }
 
-    // riwayat anggota tertentu: hanya pemilik, atau admin/petugas yang mengelola peminjaman
-    public function riwayat(Request $request, Anggota $anggota)
+    // riwayat anggota tertentu (menggunakan Policy)
+    public function riwayat(Anggota $anggota)
     {
-        $user = $request->user();
-
-        abort_unless(
-            $anggota->user_id === $user->id || $user->can('kelola peminjaman'),
-            403
-        );
+        Gate::authorize('view', $anggota);
 
         return $this->tampilRiwayat($anggota);
     }
