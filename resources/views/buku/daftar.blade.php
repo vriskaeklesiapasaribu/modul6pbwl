@@ -28,12 +28,19 @@
                         @foreach ($buku as $item)
                             <tr class="border-t">
                                 <td class="p-3">{{ $item->kategori?->nama }}</td>
-                                <td class="p-3">{!! $item->judul !!}</td>
+                                <td class="p-3">{{ $item->judul }}</td>
                                 <td class="p-3">{{ $item->penulis }}</td>
                                 <td class="p-3">{{ $item->tahun_terbit }}</td>
                                 <td class="flex gap-3 p-3">
                                     <a class="text-blue-600 hover:underline" href="{{ route('buku.show', $item->id) }}">Detail</a>
-                                    <a class="text-red-600 hover:underline" href="{{ route('buku.hapus', $item) }}">Hapus</a>
+                                    @can('kelola data buku')
+    <form method="POST" action="{{ route('buku.destroy', $item) }}"
+          onsubmit="return confirm('Hapus buku ini?')">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="text-red-600 hover:underline">Hapus</button>
+    </form>
+@endcan
                                 </td>
                             </tr>
                         @endforeach

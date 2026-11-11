@@ -41,10 +41,14 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/buku/{buku}', [BukuController::class, 'update'])->name('buku.update');
     Route::get('/kelola/buku', [BukuController::class, 'index'])->name('buku.kelola');
 
-    // Soal / Celah Khusus (A2 & A3)
-    Route::get('/buku-cari', [BukuController::class, 'cari'])->name('buku.cari');                // A2: SQL Injection
-    Route::get('/buku/{buku}/hapus', [BukuController::class, 'destroy'])->name('buku.hapus');     // A3: Penghapusan via GET
+    // Soal / Celah Khusus (A2: SQL Injection)
+    Route::get('/buku-cari', [BukuController::class, 'cari'])->name('buku.cari');
 });
+
+// Rute Penghapusan Buku yang Aman (Metode DELETE)
+Route::delete('/buku/{buku}', [BukuController::class, 'destroy'])
+    ->middleware(['auth', 'permission:kelola data buku'])
+    ->name('buku.destroy');
 
 // ===== Pengguna dan Role (Khusus Admin) =====
 Route::middleware(['auth', 'permission:kelola data pengguna'])->group(function () {

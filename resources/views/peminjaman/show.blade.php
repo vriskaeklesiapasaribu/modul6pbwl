@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-8">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <h3 class="text-lg font-bold text-gray-900 mb-4">Informasi Peminjaman</h3>
@@ -15,16 +15,16 @@
                         <p class="font-medium text-gray-800">{{ $peminjaman->id }}</p>
                     </div>
                     <div>
+                        <span class="text-gray-500 text-sm">ID Anggota</span>
+                        <p class="font-medium text-gray-800">{{ $peminjaman->anggota_id }}</p>
+                    </div>
+                    <div>
                         <span class="text-gray-500 text-sm">Nama Peminjam / Anggota</span>
                         <p class="font-medium text-gray-800">{{ $peminjaman->anggota->nama ?? '-' }}</p>
                     </div>
                     <div>
-                        <span class="text-gray-500 text-sm">Email Anggota</span>
-                        <p class="font-medium text-gray-800">{{ $peminjaman->anggota->email ?? '-' }}</p>
-                    </div>
-                    <div>
                         <span class="text-gray-500 text-sm">Judul Buku</span>
-                        <p class="font-medium text-gray-800">{{ $peminjaman->buku->judul ?? '-' }}</p>
+                        <p class="font-medium text-gray-800">{{ $peminjaman->buku->judul ?? $judulBuku ?? '-' }}</p>
                     </div>
                     <div>
                         <span class="text-gray-500 text-sm">Tanggal Pinjam</span>
@@ -37,8 +37,8 @@
                 </div>
 
                 <div class="mt-6">
-                    <a href="{{ route('dashboard') }}" class="inline-flex items-center px-4 py-2 bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-300">
-                        &larr; Kembali ke Dashboard
+                    <a href="{{ route('peminjaman.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-300">
+                        &larr; Kembali
                     </a>
                 </div>
             </div>
