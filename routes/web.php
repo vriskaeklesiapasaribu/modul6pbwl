@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 // ===== Publik (Modul 1) - Halaman Selamat Datang =====
 Route::get('/', fn () => view('home'))->name('home');
-
+Route::get('/uji-error', fn () => throw new \RuntimeException('Uji error NIM_ANDA'));
 // ===== Dashboard: diarahkan sesuai role =====
 Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
     $user = auth()->user();
