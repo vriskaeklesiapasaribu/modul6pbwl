@@ -31,24 +31,26 @@ Route::middleware(['auth', 'permission:akses dashboard petugas'])
     ->get('/petugas/dashboard', fn () => view('petugas.dashboard'))
     ->name('petugas.dashboard');
 
-// ===== Buku =====
-Route::middleware(['auth'])->group(function () {
-    Route::get('/buku', [BukuController::class, 'index'])->name('buku.index');
+// ===== Manajemen Buku (Dilindungi Gate / Permission) =====
+Route::middleware(['auth', 'can:kelola-buku'])->group(function () {
     Route::get('/buku/create', [BukuController::class, 'create'])->name('buku.create');
     Route::post('/buku', [BukuController::class, 'store'])->name('buku.store');
-    Route::get('/buku/{id}', [BukuController::class, 'show'])->whereNumber('id')->name('buku.show');
     Route::get('/buku/{buku}/edit', [BukuController::class, 'edit'])->name('buku.edit');
     Route::put('/buku/{buku}', [BukuController::class, 'update'])->name('buku.update');
+    Route::delete('/buku/{buku}', [BukuController::class, 'destroy'])->name('buku.destroy');
+
+    // Halaman pengelolaan Modul 4 (Fetch)
     Route::get('/kelola/buku', [BukuController::class, 'index'])->name('buku.kelola');
+});
+
+// ===== Buku (Umum / Baca) & Celah Khusus =====
+Route::middleware(['auth'])->group(function () {
+    Route::get('/buku', [BukuController::class, 'index'])->name('buku.index');
+    Route::get('/buku/{id}', [BukuController::class, 'show'])->whereNumber('id')->name('buku.show');
 
     // Soal / Celah Khusus (A2: SQL Injection)
     Route::get('/buku-cari', [BukuController::class, 'cari'])->name('buku.cari');
 });
-
-// Rute Penghapusan Buku yang Aman (Metode DELETE)
-Route::delete('/buku/{buku}', [BukuController::class, 'destroy'])
-    ->middleware(['auth', 'permission:kelola data buku'])
-    ->name('buku.destroy');
 
 // ===== Pengguna dan Role (Khusus Admin) =====
 Route::middleware(['auth', 'permission:kelola data pengguna'])->group(function () {

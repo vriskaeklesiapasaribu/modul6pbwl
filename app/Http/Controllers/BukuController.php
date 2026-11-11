@@ -96,7 +96,7 @@ class BukuController extends Controller
         return redirect()->route('buku.index')->with('sukses', 'Buku berhasil dihapus.');
     }
 
-    // A2: query digabung langsung ke string SQL
+    // A2: Pencarian buku
     public function cari(Request $request)
     {
         $judul = $request->query('judul');

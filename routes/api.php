@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::apiResource('buku', BukuController::class)->only(['index', 'show']);
 
-Route::middleware(['web', 'auth', 'permission:kelola data buku'])->group(function () {
+Route::middleware(['web', 'auth', 'can:kelola-buku'])->group(function () {
     Route::apiResource('buku', BukuController::class)->only(['store', 'update', 'destroy']);
 });
 
