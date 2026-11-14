@@ -7,27 +7,28 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        $this->buat('admin@gmail.com', 'Administrator', 'admin');
-        $this->buat('petugas@gmail.com', 'Petugas Perpustakaan', 'petugas');
-        $siswa1 = $this->buat('siswa@gmail.com', 'Siswa Teladan', 'siswa');
-        $siswa2 = $this->buat('siswa2@gmail.com', 'Siswa Kedua', 'siswa');
+        $this->buat('admin@gmail.com', 'Administrator', 'admin', env('SEED_ADMIN_PASSWORD'));
+        $this->buat('petugas@gmail.com', 'Petugas Perpustakaan', 'petugas', env('SEED_PETUGAS_PASSWORD'));
+        $siswa1 = $this->buat('siswa@gmail.com', 'Siswa Teladan', 'siswa', env('SEED_SISWA_PASSWORD'));
+        $siswa2 = $this->buat('siswa2@gmail.com', 'Siswa Kedua', 'siswa', env('SEED_SISWA_PASSWORD'));
 
-        // hubungkan tiap siswa dengan anggota berbeda yang punya peminjaman
         $anggotaIds = DB::table('peminjamans')->distinct()->pluck('anggota_id')->values();
         $this->hubungkan($siswa1, $anggotaIds[0] ?? null);
         $this->hubungkan($siswa2, $anggotaIds[1] ?? null);
     }
 
-    private function buat(string $email, string $nama, string $role): User
+    private function buat(string $email, string $nama, string $role, ?string $password): User
     {
-        $user = User::firstOrCreate(
+        // tanpa nilai di .env, password diacak sehingga tidak bisa ditebak
+        $user = User::updateOrCreate(
             ['email' => $email],
-            ['name' => $nama, 'password' => Hash::make('password')]
+            ['name' => $nama, 'password' => Hash::make($password ?: Str::random(24))]
         );
         $user->forceFill(['email_verified_at' => now()])->save();
         $user->syncRoles([$role]);
